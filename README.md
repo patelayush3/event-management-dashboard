@@ -1,6 +1,6 @@
 <div align="center">
   
-# 🎯 Event Management Dashboard (AI-Powered)
+# Full-Stack Event Management Platform with AI-based Semantic Search
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Next.js](https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -49,15 +49,6 @@ The core innovation of this platform is its production-grade semantic search eng
 
 Unlike traditional search engines that rely on exact keyword matches, our system allows users to search using natural language (e.g., *"AI workshop for beginners this weekend"*). 
 
-**How it works:**
-1. **Embedding Generation:** When an event is created, its title, description, and metadata are processed through **OpenAI Embeddings** to generate dense vector representations.
-2. **Vector Storage:** These embeddings are indexed using **FAISS (Facebook AI Similarity Search)**, a library optimized for highly efficient similarity search of dense vectors.
-3. **Query Matching:** When a user searches, their natural language query is similarly converted into an embedding.
-4. **Similarity Search:** FAISS rapidly compares the query vector against all event vectors to return the most semantically relevant events based on meaning, rather than exact text matches.
-
-This architecture ensures highly accurate search results that scale effectively for production environments.
-
-> Embeddings are generated only when events are created or updated, ensuring search remains fast and cost-efficient.
 
 ## 🛠 Tech Stack
 | Category | Technology |
@@ -75,10 +66,30 @@ This architecture ensures highly accurate search results that scale effectively 
 ## 🏗 System Architecture
 The application follows a modern decoupled architecture:
 
-1. **Client Layer:** A responsive frontend SPA communicates with the backend via RESTful APIs and maintains a WebSocket connection for real-time registration updates.
-2. **API Layer:** A high-performance **FastAPI** backend handles routing, business logic, and authentication validation.
-3. **Data Layer:** Relational data (users, registrations, core event details) is persisted in a robust **PostgreSQL** database. 
-4. **AI/Search Layer:** The backend integrates with the **OpenAI API** to generate embeddings for events and search queries. These vectors are managed and quickly queried using the **FAISS** vector store natively within the backend process to minimize latency during semantic searches.
+```mermaid
+graph TD
+    subgraph Client Layer
+        SPA[Responsive Frontend SPA]
+    end
+
+    subgraph API Layer
+        FastAPI[FastAPI Backend]
+    end
+
+    subgraph Data Layer
+        DB[(PostgreSQL Database)]
+    end
+
+    subgraph AI & Search Layer
+        OpenAI[OpenAI API]
+        FAISS[(FAISS Vector Store)]
+    end
+
+    SPA <-->|REST APIs & WebSockets| FastAPI
+    FastAPI <-->|Relational Data| DB
+    FastAPI -->|Generate Embeddings| OpenAI
+    FastAPI <-->|Vector Search| FAISS
+```
 
 ## 🚀 Installation & Setup
 
@@ -188,14 +199,6 @@ _Add screenshots of Organizer Dashboard, Event Creation, and Semantic Search res
 - **💬 Virtual Event Assistant (Chatbot):** An AI assistant to answer user questions about specific event details or logistics (e.g., parking, dress code) using Retrieval-Augmented Generation (RAG).
 - **📊 Sentiment Analysis:** Analyze post-event feedback and reviews using natural language processing to provide actionable insights for organizers.
 
-## 🤝 Contributing
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the project.
-2. Create your feature branch (`git checkout -b feature/AmazingNLPFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingNLPFeature'`).
-4. Push to the branch (`git push origin feature/AmazingNLPFeature`).
-5. Open a Pull Request.
 
 ## 📄 License
 Distributed under the MIT License. See `LICENSE` for more information.
