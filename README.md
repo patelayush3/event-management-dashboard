@@ -5,7 +5,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Next.js](https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
+[![Groq](https://img.shields.io/badge/Groq-F55036?style=for-the-badge&logo=groq&logoColor=white)](https://groq.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 *A comprehensive platform to simplify creating, managing, and discovering events, featuring an advanced AI-Powered Semantic Search.*
@@ -47,7 +47,7 @@ What sets this platform apart is its integrated **AI-Powered Semantic Event Sear
 ## 🧠 AI-Powered Semantic Search
 The core innovation of this platform is its production-grade semantic search engine, designed to understand the context and intent of user queries. 
 
-Unlike traditional search engines that rely on exact keyword matches, our system allows users to search using natural language (e.g., *"AI workshop for beginners this weekend"*). 
+Unlike traditional search engines that rely on exact keyword matches, our system leverages **Groq-powered embeddings for semantic search**, allowing users to search using natural language (e.g., *"AI workshop for beginners this weekend"*). 
 
 
 ## 🛠 Tech Stack
@@ -57,7 +57,7 @@ Unlike traditional search engines that rely on exact keyword matches, our system
 | **Backend** | FastAPI (Python) |
 | **Database** | PostgreSQL |
 | **Vector Store** | FAISS |
-| **AI & Embeddings** | OpenAI API |
+| **AI & Embeddings** | Groq LLM API |
 | **Authentication** | JWT (JSON Web Tokens) |
 | **Real-time Engine** | WebSocket (via FastAPI Server) |
 
@@ -68,27 +68,22 @@ The application follows a modern decoupled architecture:
 
 ```mermaid
 graph TD
-    subgraph Client Layer
-        SPA[Responsive Frontend SPA]
-    end
+    SPA["🖥️ Frontend SPA\n(Next.js / React)"] 
+    FastAPI["⚡ API Layer\nFastAPI Backend"]
+    DB[("🗄️ PostgreSQL\nDatabase")]
+    FAISS[("🔍 FAISS\nVector Store")]
+    Groq["🤖 Groq LLM API\n(Embeddings & Inference)"]
 
-    subgraph API Layer
-        FastAPI[FastAPI Backend]
-    end
+    SPA <-->|"REST APIs &amp; WebSockets"| FastAPI
+    FastAPI <-->|"Relational Data"| DB
+    FastAPI <-->|"Vector Similarity Search"| FAISS
+    FastAPI -->|"Generate Embeddings"| Groq
 
-    subgraph Data Layer
-        DB[(PostgreSQL Database)]
-    end
-
-    subgraph AI & Search Layer
-        OpenAI[OpenAI API]
-        FAISS[(FAISS Vector Store)]
-    end
-
-    SPA <-->|REST APIs & WebSockets| FastAPI
-    FastAPI <-->|Relational Data| DB
-    FastAPI -->|Generate Embeddings| OpenAI
-    FastAPI <-->|Vector Search| FAISS
+    style FastAPI fill:#005571,color:#fff,stroke:#00c2c7,stroke-width:3px
+    style SPA fill:#1a1a2e,color:#fff,stroke:#4a90d9,stroke-width:2px
+    style DB fill:#316192,color:#fff,stroke:#5b9bd5,stroke-width:2px
+    style FAISS fill:#2d4a22,color:#fff,stroke:#5cb85c,stroke-width:2px
+    style Groq fill:#F55036,color:#fff,stroke:#ff7a5c,stroke-width:2px
 ```
 
 ## 🚀 Installation & Setup
@@ -126,7 +121,7 @@ Create a `.env` file in the `backend` directory:
 ```env
 DATABASE_URL="postgresql://user:password@localhost/eventdb"
 JWT_SECRET_KEY="your-super-secret-jwt-key"
-OPENAI_API_KEY="sk-your-openai-api-key"
+GROQ_API_KEY="gsk_your-groq-api-key"
 PORT=8000
 ```
 
